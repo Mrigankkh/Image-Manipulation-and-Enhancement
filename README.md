@@ -5,8 +5,18 @@ This project is an Image Manipulation and Enhancement tool developed as a part o
 This is a java tool built using MVC architecture to perform some basic operations on images. It supports text-based user interface where in a user can enter commands as well as a Graphical User Interface. Various image manipulation operations such as Sepia, Blur, Sharpen, Level Adjust , Color COrrect, Luma , Value etc are supported.
 
 The focus of this project was to develop a tool while adhering to an elite coding design, following the SOLID principles and maintaining good readibility..
+<h1>Access</h1>
+This project was a part of coursework for the graduate course Programming Design and Paradigms and sharing the source code online would be a violation of academic integrity. However, the code can be made available on demand.
 
-<h1>How to Run the Application</h1>
+<h1>How To Run The Application</h1>
+Download the JAR file.
+<h2>Use the GUI</h2>
+Double click on the JAR file or use command "java -jar pdp-assignment5.jar" in terminal
+Download the code and run the main method. 
+<h2>Use a script</h2>
+Use command "java -jar pdp-assignment5.jar -file path-of-script-file" in terminal
+<h2>Use the text bases Comand Line interface</h2>
+Use command "java -jar pdp-assignment5.jar -text" in terminal and enter commands in the Command line.
 <h1>Supported Operations in Graphical View and How To Use Them</h1>
 <h2>Load</h2>
 <ul>
@@ -391,5 +401,4 @@ The focus of this project was to develop a tool while adhering to an elite codin
 <li>level-adjust 100 150 200 road road-level-adjust-50 split 50</li>  
 </ul>  
 
-<h1>Access</h1>
-This project was a part of coursework for the graduate course Programming Design and Paradigms and sharing the source code online would be a violation of academic integrity. However, the code can be made available on demand.
+
