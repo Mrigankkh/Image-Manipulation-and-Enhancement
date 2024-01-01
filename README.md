@@ -1,4 +1,4 @@
-# Image-Manipulation-and-Enhancement
+# GRIME: Graphical Image Manipulation and Enhancement
 This project is an Image Manipulation and Enhancement tool developed as a part of coursework for the course Programming Design and Paradigms. 
 
 <h1>Introduction</h1>
