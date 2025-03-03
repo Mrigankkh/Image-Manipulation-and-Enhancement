@@ -6,8 +6,7 @@ This is a java tool built using MVC architecture to perform some basic operation
 
 The focus of this project was to develop a tool while adhering to an elite coding design, following the SOLID principles and maintaining good readibility..
 <h1>Access</h1>
-This project was a part of coursework for the graduate course Programming Design and Paradigms and sharing the source code online would be a violation of academic integrity. However, the code can be made available on demand.
-
+This project was a part of coursework for the graduate course Programming Design and Paradigms and using the source code for your PDP Assignments would be a violation of academic integrity. 
 <h1>How To Run The Application</h1>
 Download the JAR file.
 <h2>Use the GUI</h2>
