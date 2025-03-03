@@ -1,4 +1,10 @@
 # GRIME: Graphical Image Manipulation and Enhancement
+
+https://img.shields.io/badge/Java-orange
+https://img.shields.io/badge/JUnit-green
+https://img.shields.io/badge/Object%20Oriented%20Programming-blue
+
+
 This project is an Image Manipulation and Enhancement tool developed as a part of coursework for the course Programming Design and Paradigms. 
 
 <h1>Introduction</h1>
