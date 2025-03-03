@@ -16,6 +16,77 @@ Download the code and run the main method.
 Use command "java -jar pdp-assignment5.jar -file path-of-script-file" in terminal
 <h2>Use the text bases Comand Line interface</h2>
 Use command "java -jar pdp-assignment5.jar -text" in terminal and enter commands in the Command line.
+
+<h1>Class Diagram</h1>
+<img width="808" alt="Diagram" src="https://github.com/user-attachments/assets/f9fb1a70-5209-489f-b762-0f57d2b9709a" />
+
+<h1>Image used</h1>
+  <img src="res/Road.jpg"  title="Test Image">
+Image source: This image is owned by Mrigank Khandelwal (author). Use of this image in this project is authorized.
+
+<h1>Design Changes</h1>
+<h2>New functionality</h2>
+The new functionalities introduced in this assignment were:
+<ul>
+<li>Compression</li>
+<li>Histogram</li>
+<li>Level Adjustment</li>
+<li>Color Correction</li>
+</ul>
+For these functionalities, in the controller, new command classes were created for each functionality that extend AbstractCommand class. In the controller, we add these commands in the switch statement.
+This ensures no change in other command classes and minimal change in the ImageController (just populating the switch statement).
+
+In the ImageModel interface, 4 new methods for each of these commands are added along with their implementations in Gallery.
+
+
+<h2>Split Functionality</h2>
+We assume that if no split percent is given, the split percent is 0 which is equivalent to no split. In the model side, all operations that require a split percent were modified to take as an additional parameter. In all the operation loops, a width variable was introduced and used where width  = this.width()*splitpercent/100.
+In the controller side, the numCommands variable which was initially a list, was made an array of the number of acceptable arguments. So if this array has {2,4}, it means the command can accept 2 or 4 arguments. Based on this, if commands of operations that accept this split argument have "split" as the corresponding argument and a valid numerical split percent as the subsequent argument, then the model is called with that split percent. If not split percent is passed, the model is called with a split percent of 0.
+
+<h3>Justification</h3>
+The change on the model side was necessary since we need to give the model methods extra data. Since there was minimal logical change, we added a splitPercent parameter to the relevant methods and changed the loop range to accomodate for this.
+
+On the controller side, the changes were more significant. We used an array for numParameters to make the tool more extensible (so that if more such arguments are added, minimal change is required, we only need to change the numParameters and add the relevant number of parameters).
+All command classes have an argument error method that can check for command specific argument errors. The commands accepting splitPercents can check relevant argument errors through this method.
+
+<h2>Running a script file using command line arguments such as -file filename.txt</h2>
+Since the previous verion of the assignment already passed the String[] args to the Controller object from the main, we used this and called the same method on the filename that was being called in the "run scriptfile.txt" command.
+
+
+<h1>Design Changes for Graphical User Interface</h1>
+<h2>View</h2>
+A new Graphical User Interface View is added. This view has 1 image panel that shows the image currently being operated on, a panel for the histogram of the image currently being operated on, a Navigation Bar with operations that the GRIME supports, a preview Panel for operations that support preview and input and error dialog boxes.
+The ImageViewGUI is the parent JFrame of the GUI and it is comprised of 4 components:
+<h3>NavigationBar</h3>
+This has menuItems for all the operations that the tool supports. File (Load, Compress, Save) , Filters(Blur, brighten, sharpen, color correct, sepia) , Flip(Horizontal,Vertical) and Visualize(Luma, Value, Intensity, RGB Components).
+Each menu item has a menuItemActionListener attached to it whose sole purpose is to call the menuItemClicked feature and pass the control to the Controller. The only scope of these menu items is to be clicked, once clicked, the controller handles the next steps.
+<h3>ImagePanel</h3>
+This is initially empty and once the user loads an image successfully, this image is displayed here. It uses horizontal and vertical scrolls if the image is larger than the frame. Its only job is to display the image the controller sends it.
+<h3>HistogramPanel</h3>
+Similar to imagePanel, its job is to display the histogram image that the controller sends it.
+<h3>PreviewDialog</h3>
+This Dialog pops when the user clicks a menu item that supports preview. It has a split slider for preview, a panel for the preview image and 2 buttons, one for cancel and one for confirm.
+<h3>ImageFileChooser</h3>
+Choose the image file for loading or saving imageFile
+<h3>InputDialog</h3>
+This is a dialogBox popup for taking inputs for operations that require inputs such as level Adjust, brighten and compress.</h3>
+
+<h2>Design Choices for View</h2>
+A new interface ImageViewG was created that extends the original ImageView interface. 
+<br/>
+<b>Justification: </b> There is very little (no) common code between the ImageViewCLI and ImageViewGUI and it made more sense to create a new Interface and extend it rather than use ethe same one. This way, other GUIs can also use this Interface.
+
+<h2>Controller</h2>
+A new Controller Class, ImageControllerGUI was created that extends the abstractImageController class. It also implements a Features Interface that represents the features that the model supports.
+An abstarctImageController class was created to abstract out the common methods between the GUIController and CLIContoller.
+
+
+<h2>Design Changes</h2>
+A new controller was added. This controller listens to each component of the View using the features. There is a menuItemClickHandler method, previewHanlder methods that handle their respective components using features. 
+<b>Justification: </b> New controller was required because the interaction between the model and the veiew in the GUI is fundamentally different. Moreover, the choice to listen to each component made sure that each listener for a single view component was responsible for a single atomic task. For ex: each menu item handler only does the processing required then the menuItem is clicked. If the operation is a flip, it will flip the image otherwise if its a visualize operation, it will open the preview screen and relinquish control.
+
+<h2>Model</h2>
+The ImageModel interface remains the same since other Views (CommandLine) already uses it. Minor changes in the implementation of a few methods have been made for optimization. The model keeps a record of old image as well as new image. There is no change in how it is exposed or used.
 <h1>Supported Operations in Graphical View and How To Use Them</h1>
 <h2>Load</h2>
 <ul>
@@ -152,7 +223,7 @@ Use command "java -jar pdp-assignment5.jar -text" in terminal and enter commands
 <li>Once the operation is confirmed, the preview will close, and the operation will be applied to the whole image.</li>  
 </ul>  
 
-<h1>Supported Commands</h1>
+<h1>Supported Commands in the CLI and how to use them</h1>
 <h2>load image-path image-name</h2>
 <h3>Conditions:</h3>
 <ul>
@@ -402,26 +473,6 @@ Use command "java -jar pdp-assignment5.jar -text" in terminal and enter commands
 
 
 
-
-<h1>Commands Accepted</h1>
-
-  1. <b>load image-path image-name:</b> Load an image from the specified path and refer it to henceforth in the program by the given image name.
-  2. <b>save image-path image-name:</b> Save the image with the given name to the specified path which should include the name of the file.
-  3.<b> red-component image-name dest-image-name:</b> Create an image with the red-component of the image with the given name, and refer to it henceforth in the program by the given destination name. Similar commands for green, blue, value, luma, intensity components should be supported. Note that the images for value, luma and intensity will be greyscale images.
-  4.<b> horizontal-flip image-name dest-image-name:</b> Flip an image horizontally to create a new image, referred to henceforth by the given destination name.
-  5. <b>vertical-flip image-name dest-image-name:</b> Flip an image vertically to create a new image, referred to henceforth by the given destination name.
-  6. <b>brighten increment image-name dest-image-name:</b> brighten the image by the given increment to create a new image, referred to henceforth by the given destination name. The increment may be positive (brightening) or negative (darkening).
-  7. <b>rgb-split image-name dest-image-name-red dest-image-name-green dest-image-name-blue: </b>split the given image into three images containing its red, green and blue components respectively. These would be the same images that would be individually produced with the red-component, green-component and blue-component commands.
-  8. <b>rgb-combine image-name red-image green-image blue-image:</b> Combine the three greyscale images into a single image that gets its red, green and blue components from the three images respectively.
-  9. <b>blur image-name dest-image-name:</b> blur the given image and store the result in another image with the given name.
-  10. <b>sharpen image-name dest-image-name:</b> sharpen the given image and store the result in another image with the given name.
-  11. <b>sepia image-name dest-image-name:</b> produce a sepia-toned version of the given image and store the result in another image with the given name.
-  12. <b>compress percentage image-name dest-image-name:</b> creates a compression version of the image for a percentage between 0 and 100.
-13. <b>histogram  image-name dest-image-name:</b> creates a histogram of the image.
-14. <b>level-adjust b m w  image-name dest-image-name split split-percent:</b> Level adjusts the image based on the b m w value.
-15. <b>color-correct image-name dest-image-name split split-percent:</b>Performs color correction on the image.
-  13. <b>run script-file:</b> Load and run the script commands in the specified file.
-
 <h1>Project Structure</h1>
 The project uses the MVC architecture and the project has been divided into seperate model, view and controller components.
 
@@ -534,78 +585,7 @@ Command to compress an image.
 <h4>ColorCorrection</h4>
 Command to perform color correction on an image.
 
-<h1>Class Diagram</h1>
-<p align="center">
-  <img src="Diagram.png"  title="Class Diagram">
-</p>
 
-<h1>Image used</h1>
-  <img src="res/Road.jpg"  title="Test Image">
-Image source: This image is owned by Mrigank Khandelwal (author). Use of this image in this project is authorized.
-
-<h1>Design Changes</h1>
-<h2>New functionality</h2>
-The new functionalities introduced in this assignment were:
-<ul>
-<li>Compression</li>
-<li>Histogram</li>
-<li>Level Adjustment</li>
-<li>Color Correction</li>
-</ul>
-For these functionalities, in the controller, new command classes were created for each functionality that extend AbstractCommand class. In the controller, we add these commands in the switch statement.
-This ensures no change in other command classes and minimal change in the ImageController (just populating the switch statement).
-
-In the ImageModel interface, 4 new methods for each of these commands are added along with their implementations in Gallery.
-
-
-<h2>Split Functionality</h2>
-We assume that if no split percent is given, the split percent is 0 which is equivalent to no split. In the model side, all operations that require a split percent were modified to take as an additional parameter. In all the operation loops, a width variable was introduced and used where width  = this.width()*splitpercent/100.
-In the controller side, the numCommands variable which was initially a list, was made an array of the number of acceptable arguments. So if this array has {2,4}, it means the command can accept 2 or 4 arguments. Based on this, if commands of operations that accept this split argument have "split" as the corresponding argument and a valid numerical split percent as the subsequent argument, then the model is called with that split percent. If not split percent is passed, the model is called with a split percent of 0.
-
-<h3>Justification</h3>
-The change on the model side was necessary since we need to give the model methods extra data. Since there was minimal logical change, we added a splitPercent parameter to the relevant methods and changed the loop range to accomodate for this.
-
-On the controller side, the changes were more significant. We used an array for numParameters to make the tool more extensible (so that if more such arguments are added, minimal change is required, we only need to change the numParameters and add the relevant number of parameters).
-All command classes have an argument error method that can check for command specific argument errors. The commands accepting splitPercents can check relevant argument errors through this method.
-
-<h2>Running a script file using command line arguments such as -file filename.txt</h2>
-Since the previous verion of the assignment already passed the String[] args to the Controller object from the main, we used this and called the same method on the filename that was being called in the "run scriptfile.txt" command.
-
-
-<h1>Design Changes for Graphical User Interface</h1>
-<h2>View</h2>
-A new Graphical User Interface View is added. This view has 1 image panel that shows the image currently being operated on, a panel for the histogram of the image currently being operated on, a Navigation Bar with operations that the GRIME supports, a preview Panel for operations that support preview and input and error dialog boxes.
-The ImageViewGUI is the parent JFrame of the GUI and it is comprised of 4 components:
-<h3>NavigationBar</h3>
-This has menuItems for all the operations that the tool supports. File (Load, Compress, Save) , Filters(Blur, brighten, sharpen, color correct, sepia) , Flip(Horizontal,Vertical) and Visualize(Luma, Value, Intensity, RGB Components).
-Each menu item has a menuItemActionListener attached to it whose sole purpose is to call the menuItemClicked feature and pass the control to the Controller. The only scope of these menu items is to be clicked, once clicked, the controller handles the next steps.
-<h3>ImagePanel</h3>
-This is initially empty and once the user loads an image successfully, this image is displayed here. It uses horizontal and vertical scrolls if the image is larger than the frame. Its only job is to display the image the controller sends it.
-<h3>HistogramPanel</h3>
-Similar to imagePanel, its job is to display the histogram image that the controller sends it.
-<h3>PreviewDialog</h3>
-This Dialog pops when the user clicks a menu item that supports preview. It has a split slider for preview, a panel for the preview image and 2 buttons, one for cancel and one for confirm.
-<h3>ImageFileChooser</h3>
-Choose the image file for loading or saving imageFile
-<h3>InputDialog</h3>
-This is a dialogBox popup for taking inputs for operations that require inputs such as level Adjust, brighten and compress.</h3>
-
-<h2>Design Choices for View</h2>
-A new interface ImageViewG was created that extends the original ImageView interface. 
-<br/>
-<b>Justification: </b> There is very little (no) common code between the ImageViewCLI and ImageViewGUI and it made more sense to create a new Interface and extend it rather than use ethe same one. This way, other GUIs can also use this Interface.
-
-<h2>Controller</h2>
-A new Controller Class, ImageControllerGUI was created that extends the abstractImageController class. It also implements a Features Interface that represents the features that the model supports.
-An abstarctImageController class was created to abstract out the common methods between the GUIController and CLIContoller.
-
-
-<h2>Design Changes</h2>
-A new controller was added. This controller listens to each component of the View using the features. There is a menuItemClickHandler method, previewHanlder methods that handle their respective components using features. 
-<b>Justification: </b> New controller was required because the interaction between the model and the veiew in the GUI is fundamentally different. Moreover, the choice to listen to each component made sure that each listener for a single view component was responsible for a single atomic task. For ex: each menu item handler only does the processing required then the menuItem is clicked. If the operation is a flip, it will flip the image otherwise if its a visualize operation, it will open the preview screen and relinquish control.
-
-<h2>Model</h2>
-The ImageModel interface remains the same since other Views (CommandLine) already uses it. Minor changes in the implementation of a few methods have been made for optimization. The model keeps a record of old image as well as new image. There is no change in how it is exposed or used.
 
 
 <b>The owner of all orignial images including screenshots is the author(Mrigank Khandelwal) and the use of these images in this project is authorized</b>
