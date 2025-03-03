@@ -1,0 +1,3 @@
+load /Users/mrigank/College/CS5010/Assignments/pdp-assignment5/night.png man
+color-correct man manh
+save /Users/mrigank/College/CS5010/Assignments/pdp-assignment5/ manh.png
